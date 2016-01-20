@@ -104,3 +104,41 @@ plt.ylabel('Number of misclassifications')
 plt.tight_layout()
 # plt.savefig('./perceptron_1.png', dpi=300)
 plt.show()
+
+# Playground!
+
+def net_input(X, w_):
+    return np.dot(X, w_[1:]) + w_[0]
+
+
+def predict(X, w_):
+    return np.where(net_input(X=X, w_=w_) >= 0.0, 1, -1)
+
+
+# One case
+eta = 0.01
+n_iter = 10
+w_ = np.zeros(1 + X.shape[1])
+errors_ = []
+errors = 0
+xi, target = tuple(zip(X, y))[0]
+update = eta * (target - predict(X=xi, w_=w_))
+w_[1:] += update * xi
+w_[0] += update
+errors += int(update != 0.0)
+errors_.append(errors)
+
+# All cases
+eta = 0.01
+n_iter = 10
+w_ = np.zeros(1 + X.shape[1])
+errors_ = []
+
+for _ in range(n_iter):
+    errors = 0
+    for xi, target in zip(X, y):
+        update = eta * (target - predict(X=xi, w_=w_))
+        w_[1:] += update * xi
+        w_[0] += update
+        errors += int(update != 0.0)
+    errors_.append(errors)
